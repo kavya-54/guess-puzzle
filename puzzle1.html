@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guess the Password</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #444;
+    }
+
+    .hint {
+      font-size: 1.1em;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #aaa;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #2196f3;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1em;
+      color: #d32f2f;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🧠 Guess the Office Password</h2>
+  <div class="hint" id="hint">Hint will load here...</div>
+
+  <input type="text" id="guess" placeholder="Type your guess here..." />
+  <br />
+  <button onclick="checkAnswer()">Submit</button>
+
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+  const password = "ITBROKEAGAIN"; // Case-sensitive now
+  const hints = [
+    "It's what everyone yells during deployment 🚨",
+    "It starts with 'IT' — of course it does.",
+    "Common phrase heard near the coffee machine ☕",
+    "You say this after clicking 'Update' on production",
+    "If Outlook crashes, you scream this",
+    "It’s the WiFi password... maybe.",
+  ];
+
+  const funnyErrors = [
+    "You're thinking too hard. Try again after coffee ☕",
+    "That's not it, but at least you're trying! 💪",
+    "The answer might be in plain sight...",
+    "Try yelling it at your screen. Maybe it'll work.",
+    "404: Your brain not found 🧠",
+  ];
+
+  const clues = [
+    "Clue: It's in ALL CAPS.",
+    "Clue: It has 12 characters.",
+    "Clue: It starts with 'IT' and ends in 'GAIN'.",
+  ];
+
+  let hintElement = document.getElementById("hint");
+  let messageElement = document.getElementById("message");
+  let attempts = 0;
+
+  function showRandomHint() {
+    const randomIndex = Math.floor(Math.random() * hints.length);
+    hintElement.textContent = "Hint: " + hints[randomIndex];
+  }
+
+  function checkAnswer() {
+    const userGuess = document.getElementById("guess").value.trim(); // No .toUpperCase() — keeps case
+    attempts++;
+
+    if (userGuess === password) {
+      messageElement.textContent = "🎉 Correct! The office survives another day!";
+      messageElement.classList.add("success");
+      setTimeout(() => {
+        window.location.href = "next_puzzle.html"; // change as needed
+      }, 2000);
+    } else {
+      let response = funnyErrors[Math.floor(Math.random() * funnyErrors.length)];
+      if (attempts === 3) response += "\n" + clues[0];
+      else if (attempts === 5) response += "\n" + clues[1];
+      else if (attempts >= 7) response += "\n" + clues[2];
+
+      messageElement.textContent = response;
+    }
+  }
+
+  window.onload = showRandomHint;
+</script>
+
+</body>
+</html>
