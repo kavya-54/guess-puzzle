@@ -2,232 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Stage 1 – Logic & Deduction</title>
+  <title>Stage 3 – Communication & Behavior</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Georgia', serif;
-      background: radial-gradient(ellipse at center, #2b2b2b 0%, #1a1a1a 100%);
-      color: #f0f0f0;
       margin: 0;
-      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #faf5ef;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
     }
-
-    .card {
-      background: #f5f0e6;
-      color: #222;
-      padding: 40px 30px;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      max-width: 700px;
-      width: 90%;
-      text-align: center;
+    .chat-window {
+      background: white;
+      width: 92%;
+      max-width: 720px;
+      height: 80vh;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
-
-    h2 {
-      color: #444;
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    #stageIndicator {
-      font-size: 16px;
-      margin-bottom: 25px;
-      color: #555;
-    }
-
-    input {
-      width: 90%;
-      padding: 14px;
-      font-size: 16px;
-      border: 2px solid #bbb;
-      border-radius: 8px;
-      margin-top: 15px;
-      transition: border-color 0.3s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #007bff;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background-color: #007bff;
+    .chat-header {
+      padding: 16px 20px;
+      background: #1f2951;
       color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
+      font-weight: 500;
+      font-size: 20px;
+      position: relative;
     }
-
-    button:hover {
-      background-color: #0056b3;
+    .chat-header::after {
+      content: "✅ Stage 3";
+      position: absolute;
+      right: 20px;
+      background: #f0b429;
+      color: #1f2951;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
     }
-
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f7f2ed;
+    }
     .message {
-      margin-top: 20px;
-      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .user {
+      font-weight: 500;
+      color: #1f2951;
+      margin-bottom: 4px;
+    }
+    .bubble {
+      background: #e1e4ea;
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 12px;
+      max-width: 80%;
+      color: #1f2951;
+    }
+    .you .bubble {
+      background: #2aa89b;
+      color: white;
+      margin-left: auto;
+    }
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      background: white;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
       font-size: 16px;
     }
-
-    .success {
-      color: green;
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 18px;
+      background: #1f2951;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
     }
-
-    .error {
-      color: #c0392b;
+    .chat-input button:hover {
+      background: #182040;
     }
-
-    #nextButton {
-      display: none;
-      margin-top: 20px;
-      background-color: #28a745;
-    }
-
-    #nextButton:hover {
-      background-color: #218838;
-    }
-
-    .puzzle-title {
-      font-style: italic;
-      color: #555;
-      font-size: 17px;
-      margin-bottom: 15px;
-    }
-
-    em {
-      color: #666;
-    }
+    .success { color: #2e7d32; font-weight: 500; }
+    .error   { color: #c62828; font-weight: 500; }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>🧠 Stage 1: Brain.exe Activated</h2>
-    <div id="stageIndicator">Stage 1 of 11</div>
-    <div id="quizArea"></div>
-    <button id="nextButton">Next Stage ➡️</button>
+<div class="chat-window">
+  <div class="chat-header">💬 Stage 3: Decode the Goss in Threads</div>
+  <div class="chat-messages" id="chatLog"></div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type your reply..." />
+    <button onclick="submitAnswer()">Send</button>
   </div>
+</div>
 
-  <script>
-    let currentStage = 0;
-    const totalStages = 11;
+<script>
+  const fullPuzzleSet = [
+    { prompt: ["@HRGuru: 'Let's circle back' usually means what?", "@ManagerMike: I'll follow up later, but you know what that means..."], answer: "never happening", success: "✅ Correct – that's corporate speak for 'don't wait up.'" },
+    { prompt: ["@InternIsha: 'Ping me if anything.' What’s the real meaning?", "Hint: It's not available immediately."], answer: "i'll ignore", success: "🎯 Yep – you're not hearing back anytime soon!" },
+    { prompt: ["@TeamLead: 'ASAP' means round the clock effort. What's it really?", "Clock emoji hint ⏰"], answer: "as soon as possible", success: "✅ Yes! But in reality, it's kind of urgent." },
+    { prompt: ["@Boss: 'Per my last email...' That tone is...?", "Pick the vibe."], answer: "passive aggressive", success: "👏 Exactly – classic passive-aggressive opener." },
+    { prompt: ["@Coworker: 'I'm looped in.' Means what exactly?", "Empty loop, maybe?"], answer: "i was cc'd", success: "✔️ Correct – means you'd just been cc’d for show." },
+    { prompt: ["@Manager: 'Let's take offline.' That means what?", "This one is not about electricity."], answer: "in private later", success: "👍 Right – we'll discuss away from the group." },
+    { prompt: ["@Peer: 'I'll keep you posted.' Should you expect updates?", "Emoji eyes 👀"], answer: "not really", success: "🎯 Yup – updates might never arrive." },
+    { prompt: ["@HR: 'We're all on the same page.' Means what?", "Metaphor alert!"], answer: "we agree", success: "✅ Correct – kind of means 'so you better agree'." },
+    { prompt: ["@Colleague: 'Low-hanging fruit.' What are they talking about?", "Fruit joke."], answer: "easy tasks", success: "🍇 Yes – the tasks anyone can do." },
+    { prompt: ["@Manager: 'Let's circle around the agenda.' Is that odd?","Hint: It's repetitive."], answer: "we're stalling", success: "✅ Exactly – avoiding decisions again." },
+    { prompt: ["@LeadDev: 'Can you raise a ticket?' What does this mean?"], answer: "do it yourself", success: "✅ Accurate – they just passed the work to you!" },
+    { prompt: ["@ProjectMgr: 'Let's align on this.' What's the actual plan?"], answer: "argue it out", success: "✅ Haha yes! It means let's debate." },
+    { prompt: ["@SlackBot: 'Daily standup at 9am sharp!' What's implied?"], answer: "join at 9:10", success: "✅ Right – nobody's actually sharp." },
+    { prompt: ["@Support: 'We'll escalate this.' Now what?"], answer: "nothing happens", success: "✅ Correct! Escalation = Email ping-pong." },
+    { prompt: ["@TeamEmail: 'Gentle Reminder' — how gentle is it?"], answer: "very aggressive", success: "✅ Yes – passive-aggression level: pro." }
+  ];
 
-    function completeStage() {
-      currentStage++;
-      if (currentStage < totalStages) {
-        document.getElementById("nextButton").style.display = "inline-block";
+  // Shuffle and pick 5
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  const puzzles = shuffle(fullPuzzleSet).slice(0, 5);
+  let index = 0;
+  const chatLog = document.getElementById("chatLog");
+
+  function showPrompt() {
+    puzzles[index].prompt.forEach(line => {
+      const msg = document.createElement("div");
+      msg.classList.add("message");
+      msg.innerHTML = `<div class="user">${line.split(":")[0]}</div><div class="bubble">${line.split(":")[1]?.trim() || line}</div>`;
+      chatLog.appendChild(msg);
+    });
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  function submitAnswer() {
+    const input = document.getElementById("userInput");
+    const text = input.value.trim().toLowerCase();
+    if (!text) return;
+
+    const userMsg = document.createElement("div");
+    userMsg.classList.add("message", "you");
+    userMsg.innerHTML = `<div class="user">You</div><div class="bubble">${input.value}</div>`;
+    chatLog.appendChild(userMsg);
+
+    const correct = puzzles[index].answer.toLowerCase();
+    const reply = document.createElement("div");
+    reply.classList.add("message");
+    const resp = document.createElement("div");
+    resp.classList.add("bubble");
+
+    if (text === correct) {
+      resp.innerHTML = puzzles[index].success;
+      resp.classList.add("success");
+      reply.appendChild(resp);
+      chatLog.appendChild(reply);
+      index++;
+      if (index < puzzles.length) {
+        setTimeout(showPrompt, 1000);
       } else {
-        alert("🎉 Stage 1 complete! Proceeding to the next puzzle.");
+        setTimeout(() => {window.location.href = "puzzle4.html; // ✅ Redirect to Stage 4"}, 1200);
       }
+    } else {
+      resp.innerHTML = "❌ Not quite. Try something more office-sarcastic.";
+      resp.classList.add("error");
+      reply.appendChild(resp);
+      chatLog.appendChild(reply);
     }
 
-    document.getElementById("nextButton").onclick = () => {
-      alert("Here you'd load Stage 2 or redirect to it.");
-    };
+    input.value = "";
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
 
-    function runLogicBatch() {
-      const puzzles = [
-        {
-          question: "🧊 What’s the only item you’ll always find in the office fridge?",
-          placeholder: "Type your answer",
-          answer: "Expired ID badge",
-          hint: "It never leaves, just like the workload."
-        },
-        {
-          question: "🗓 If the team meeting is moved from Friday to two days before Wednesday, what day is it now?",
-          placeholder: "Type your answer",
-          answer: "Monday",
-          hint: "Count backwards from Wednesday."
-        },
-        {
-          question: "📧 Your inbox has 100 unread emails. You delete 40. Half of the rest are read. How many are still unread?",
-          placeholder: "Type the number",
-          answer: "30",
-          hint: "Do the math step by step."
-        },
-        {
-          question: "📁 I have folders within folders, but no files. What am I?",
-          placeholder: "Your answer",
-          answer: "Email thread",
-          hint: "Think of something digital, endless, and annoying."
-        },
-        {
-          question: "📆 If yesterday was the day before Monday, what day is today?",
-          placeholder: "Enter the day",
-          answer: "Tuesday",
-          hint: "Rewind from Monday carefully."
-        },
-        {
-          question: "🔢 Fill the blank: 1, 2, 4, 8, __",
-          placeholder: "Your number",
-          answer: "16",
-          hint: "It doubles each time."
-        },
-        {
-          question: "🔤 Unscramble the word: 'E T N I M G E'",
-          placeholder: "Your answer",
-          answer: "Meeting",
-          hint: "It happens too often."
-        },
-        {
-          question: "📎 A colleague always books a meeting at 5:59 PM. What's their motive?",
-          placeholder: "Guess the motive",
-          answer: "Avoid real work",
-          hint: "It’s an excuse."
-        },
-        {
-          question: "👀 If everyone is 'working from home', but no one replies... where are they really?",
-          placeholder: "Your guess",
-          answer: "Sleeping",
-          hint: "Let’s be honest here."
-        },
-        {
-          question: "📊 What comes next? 9 AM, 11 AM, 2 PM, 6 PM, __",
-          placeholder: "Your answer",
-          answer: "11 PM",
-          hint: "It’s escalating!"
-        }
-      ];
-
-      const selected = puzzles[Math.floor(Math.random() * puzzles.length)];
-      const quizArea = document.getElementById("quizArea");
-      quizArea.innerHTML = `
-        <div class="puzzle-title">Puzzle: Logic Riddle 🧩</div>
-        <p style="font-size: 18px; font-weight: 500;">${selected.question}</p>
-        <p><em>Hint: ${selected.hint}</em></p>
-        <input type="text" id="logicInput" placeholder="${selected.placeholder}" />
-        <button onclick="checkLogicAnswer()">Submit</button>
-        <div id="message" class="message"></div>
-      `;
-
-      window.checkLogicAnswer = () => {
-        const userAnswer = document.getElementById("logicInput").value.trim().toLowerCase();
-        const correctAnswer = selected.answer.toLowerCase();
-        const msg = document.getElementById("message");
-
-        if (userAnswer === correctAnswer) {
-          msg.textContent = "✅ Correct! You cracked the logic!";
-          msg.className = "message success";
-          setTimeout(() => {
-            completeStage();
-          }, 1000);
-        } else {
-          msg.textContent = "❌ Nope! Try again, detective.";
-          msg.className = "message error";
-        }
-      };
-    }
-
-    window.onload = runLogicBatch;
-  </script>
+  window.onload = showPrompt;
+</script>
 
 </body>
 </html>
