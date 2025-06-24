@@ -2,224 +2,213 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Stage 2 – Office Culture & Humor</title>
+  <title>Stage 4 – Debug Terminal</title>
   <style>
     body {
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      background: linear-gradient(to right, #ffe9d6, #f9f0ff);
       margin: 0;
-      padding: 0;
+      background: #111;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
+      padding: 20px;
     }
 
-    .bubble {
-      background: #fffdf7;
+    .terminal {
+      background: #000;
       padding: 30px;
-      border-radius: 25px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
-      max-width: 650px;
-      width: 90%;
-      text-align: center;
-      border: 5px dotted #ffd36a;
+      width: 720px;
+      max-width: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #0f0;
     }
 
-    h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #ff69b4;
-    }
-
-    #stageIndicator {
+    .terminal-header {
       font-size: 18px;
-      margin-bottom: 25px;
-      color: #666;
+      margin-bottom: 20px;
     }
 
-    input, select {
-      width: 90%;
-      padding: 12px;
-      font-size: 16px;
-      margin-top: 15px;
-      border-radius: 12px;
-      border: 2px dashed #ffb347;
+    .prompt {
+      margin-bottom: 10px;
+      white-space: pre-wrap;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #ff69b4;
-      color: white;
+    .hint {
+      font-size: 14px;
+      color: #999;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 8px 10px;
+      background: #111;
+      border: 1px solid #33ff33;
+      color: #33ff33;
+      font-family: 'Courier New', monospace;
+    }
+
+    .input-area button {
+      padding: 8px 16px;
+      background: #33ff33;
       border: none;
-      border-radius: 12px;
+      color: #000;
       cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #e255a1;
-    }
-
-    .message {
-      margin-top: 18px;
       font-weight: bold;
     }
 
-    .success {
-      color: green;
+    .hint-button {
+      margin-top: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #33ff33;
+      background: none;
+      border: none;
+      text-decoration: underline;
     }
 
-    .error {
-      color: red;
-    }
-
-    #nextButton {
-      display: none;
-      margin-top: 20px;
-      background-color: #66cc66;
-    }
-
-    #nextButton:hover {
-      background-color: #52b452;
-    }
-
-    .emoji {
-      font-size: 24px;
-    }
+    .success { color: #0f0; margin-top: 10px; font-weight: bold; }
+    .error { color: red; margin-top: 10px; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <div class="bubble">
-    <h2>🤣 Stage 2: Ctrl+Alt+Banter</h2>
-    <div id="stageIndicator">Stage 2 of 11</div>
-    <div id="quizArea"></div>
-    <button id="nextButton">Take me to Stage 3 ➡️</button>
+<div class="terminal">
+  <div class="terminal-header">💻 Stage 4: Debugging What Shouldn't Exist</div>
+  <div class="prompt" id="terminalOutput"></div>
+  <button class="hint-button" onclick="toggleHint()">Need a hint?</button>
+  <div class="hint" id="hintBox"></div>
+  <div class="input-area">
+    <input type="text" id="answerInput" placeholder="Enter answer..." />
+    <button onclick="submitAnswer()">Enter</button>
   </div>
+</div>
 
-  <script>
-    let currentStage = 1;
-
-    function completeStage() {
-      currentStage++;
-      document.getElementById("nextButton").style.display = "inline-block";
+<script>
+  const allPuzzles = [
+    {
+      text: `Which file would break production if ignored?\n\n> cd /projects/final_versions/test_final_FINAL/\n> ls\n- try_this.txt\n- FINALVERSION.png\n- secret_ONE_keep.png\n- meh.png`,
+      answer: "secret_one_keep.png",
+      hint: "If it says 'keep', maybe there's a reason."
+    },
+    {
+      text: `Which doc shouldn't be in the HR backups folder?\n\n> cd /mnt/employees/admin/hr/backup/\n> ls\n- policies.doc\n- archive_23.zip\n- nothing_to_see_here.pdf\n- hire_log_REAL.pdf`,
+      answer: "hire_log_real.pdf",
+      hint: "Sometimes 'REAL' means 'really a problem'."
+    },
+    {
+      text: `What looks like the messiest final log?\n\n> cd /system32/temp/cache/files/\n> ls\n- final-final-done.log\n- test.txt\n- ignore.tmp\n- virus_scan.bat`,
+      answer: "final-final-done.log",
+      hint: "'Final' repeated is a dev's way of giving up."
+    },
+    {
+      text: `Which idea has clearly been through too much?\n\n> cd /shared/teamX/projectX/assets/\n> ls\n- idea_v1.txt\n- idea_v2.txt\n- idea_final_FINAL.txt\n- old_stuff.txt`,
+      answer: "idea_final_final.txt",
+      hint: "This idea has seen some things..."
+    },
+    {
+      text: `Which file looks dangerously important?\n\n> cd /backup/clients/2022/reports/\n> ls\n- a.txt\n- b.txt\n- c.txt\n- masterReport_FINAL.docx`,
+      answer: "masterreport_final.docx",
+      hint: "Master reports are rarely casual."
+    },
+    {
+      text: `Which log screams something went wrong?\n\n> cd /dev/journal/security/logs/\n> ls\n- jan.log\n- feb.log\n- mar.log\n- breach_March_FINAL.log`,
+      answer: "breach_march_final.log",
+      hint: "When 'breach' and 'final' appear together, look twice."
+    },
+    {
+      text: `Which meme doesn't belong in /fun/junk/memes?\n\n> cd /documents/fun/junk/memes/\n> ls\n- haha1.png\n- not_funny.png\n- super_secret.png\n- meme_final.jpg`,
+      answer: "super_secret.png",
+      hint: "One of these memes might be top secret."
+    },
+    {
+      text: `Which file should you definitely NOT open?\n\n> cd /configs/build/settings/\n> ls\n- config.json\n- settings.json\n- DO_NOT_TOUCH_final.json\n- back.json`,
+      answer: "do_not_touch_final.json",
+      hint: "Reverse psychology works on devs too."
+    },
+    {
+      text: `What file marks the final version of creative chaos?\n\n> cd /training/docs/drafts/\n> ls\n- draft1.txt\n- draft2.txt\n- draft_final.txt\n- notes.txt`,
+      answer: "draft_final.txt",
+      hint: "Draft 1, 2, then... inevitable final."
+    },
+    {
+      text: `Which attachment probably triggered an audit?\n\n> cd /emails/attachments/\n> ls\n- vacation.png\n- INVOICE_REAL.docx\n- draft_contract.pdf\n- ignore_me.txt`,
+      answer: "invoice_real.docx",
+      hint: "Finance never jokes with INVOICE_REALs."
     }
+  ];
 
-    document.getElementById("nextButton").onclick = () => {
-      alert("Next stage coming soon! Or link to stage3.html.");
-    };
+  let selectedPuzzles = [];
+  let current = 0;
 
-    function runCultureBatch() {
-      const quizzes = [
-        {
-          question: "💼 Which of these is NOT a corporate buzzword?",
-          type: "select",
-          options: ["Synergy", "Bandwidth", "Pivot", "Toaster"],
-          answer: "Toaster",
-          hint: "One of these is for breakfast, not brainstorms."
-        },
-        {
-          question: "🙃 Translate this HR phrase: 'We value flexibility.'",
-          placeholder: "Type your translation",
-          answer: "Be available always",
-          hint: "They're basically saying 'You're never off'."
-        },
-        {
-          question: "👴 Who still prints out emails and refers to fax?",
-          placeholder: "Enter nickname",
-          answer: "Boomer Bob",
-          hint: "Classic old-school name."
-        },
-        {
-          question: "📧 What’s the most used excuse for missing a meeting?",
-          placeholder: "Type your excuse",
-          answer: "Didn’t get the invite",
-          hint: "It always works... kind of."
-        },
-        {
-          question: "😶‍🌫️ If 3 people are typing in group chat but no one replies, what does it mean?",
-          placeholder: "Your guess",
-          answer: "Meeting's over",
-          hint: "Silence means it’s done."
-        },
-        {
-          question: "📎 What does ‘Noted’ actually mean in chat?",
-          placeholder: "Translate it",
-          answer: "Ignored",
-          hint: "It’s basically ghosting you."
-        },
-        {
-          question: "📅 What’s the actual meaning of ‘tentative’ in a calendar invite?",
-          placeholder: "What does it really mean?",
-          answer: "I won’t come",
-          hint: "Spoiler: They're not showing up."
-        },
-        {
-          question: "🍕 Which item mysteriously vanishes during lunch meetings?",
-          placeholder: "Your guess",
-          answer: "Last slice of pizza",
-          hint: "It's everyone's favorite... and always gone."
-        },
-        {
-          question: "🧑‍💻 Who sends 'quick updates' that are actually long essays?",
-          placeholder: "Their nickname",
-          answer: "The Keyboard Warrior",
-          hint: "They type... a lot."
-        },
-        {
-          question: "💤 What’s the #1 activity during long webinars?",
-          placeholder: "Be honest!",
-          answer: "Sleeping",
-          hint: "The eyes close, the spirit exits."
-        }
-      ];
+  function pickTwoRandomPuzzles() {
+    const shuffled = [...allPuzzles].sort(() => Math.random() - 0.5);
+    selectedPuzzles = shuffled.slice(0, 2);
+  }
 
-      const selected = quizzes[Math.floor(Math.random() * quizzes.length)];
-      const quizArea = document.getElementById("quizArea");
+  function showPuzzle() {
+    const terminal = document.getElementById("terminalOutput");
+    const hintBox = document.getElementById("hintBox");
+    hintBox.style.display = "none";
+    hintBox.textContent = selectedPuzzles[current].hint;
+    terminal.innerHTML = `<pre>${selectedPuzzles[current].text}</pre>`;
+  }
 
-      if (selected.type === "select") {
-        quizArea.innerHTML = `
-          <p class="emoji">${selected.question}</p>
-          <p><em>${selected.hint}</em></p>
-          <select id="cultureInput">
-            ${selected.options.map(opt => `<option>${opt}</option>`).join('')}
-          </select>
-          <button onclick="checkCultureAnswer()">Submit</button>
-          <div id="message" class="message"></div>
-        `;
+  function toggleHint() {
+    const hintBox = document.getElementById("hintBox");
+    hintBox.style.display = hintBox.style.display === "block" ? "none" : "block";
+  }
+
+  function submitAnswer() {
+    const inputElem = document.getElementById("answerInput");
+    const input = inputElem.value.trim().toLowerCase();
+    const correct = selectedPuzzles[current].answer.toLowerCase();
+    const terminal = document.getElementById("terminalOutput");
+
+    const prevSuccess = terminal.querySelector(".success");
+    const prevError = terminal.querySelector(".error");
+    if (prevSuccess) prevSuccess.remove();
+    if (prevError) prevError.remove();
+
+    if (input === correct) {
+      const success = document.createElement("div");
+      success.className = "success";
+      success.textContent = "✅ Correct!";
+      terminal.appendChild(success);
+
+      current++;
+      if (current < selectedPuzzles.length) {
+        setTimeout(() => {
+          inputElem.value = "";
+          showPuzzle();
+        }, 1000);
       } else {
-        quizArea.innerHTML = `
-          <p class="emoji">${selected.question}</p>
-          <p><em>${selected.hint}</em></p>
-          <input type="text" id="cultureInput" placeholder="${selected.placeholder}" />
-          <button onclick="checkCultureAnswer()">Submit</button>
-          <div id="message" class="message"></div>
-        `;
+        setTimeout(() => {
+          alert("🎉 You debugged the mess. Stage 4 complete!");
+        }, 1000);
       }
-
-      window.checkCultureAnswer = () => {
-        const inputVal = document.getElementById("cultureInput").value.trim().toLowerCase();
-        const correct = selected.answer.toLowerCase();
-        const msg = document.getElementById("message");
-
-        if (inputVal === correct) {
-          msg.textContent = "🎉 LOL! Correct!";
-          msg.className = "message success";
-          setTimeout(() => {
-            completeStage();
-          }, 1000);
-        } else {
-          msg.textContent = "🙈 Nope! Try again.";
-          msg.className = "message error";
-        }
-      };
+    } else {
+      const error = document.createElement("div");
+      error.className = "error";
+      error.textContent = "❌ Incorrect. Access denied.";
+      terminal.appendChild(error);
     }
+  }
 
-    window.onload = runCultureBatch;
-  </script>
+  window.onload = () => {
+    pickTwoRandomPuzzles();
+    showPuzzle();
+  };
+</script>
 
 </body>
 </html>
