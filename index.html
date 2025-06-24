@@ -83,7 +83,7 @@
 <body>
 
 <div class="terminal">
-  <div class="terminal-header">💻 Stage 4: Debugging What Shouldn't Exist</div>
+  <div class="terminal-header">💻  Debug What Shouldn't Exist</div>
   <div class="prompt" id="terminalOutput"></div>
   <button class="hint-button" onclick="toggleHint()">Need a hint?</button>
   <div class="hint" id="hintBox"></div>
@@ -252,7 +252,7 @@
 
   function pickTwoRandomPuzzles() {
     const shuffled = [...allPuzzles].sort(() => Math.random() - 0.5);
-    selectedPuzzles = shuffled.slice(0, 2);
+    selectedPuzzles = shuffled.slice(0, 5);
   }
 
   function showPuzzle() {
@@ -293,7 +293,7 @@
         }, 1000);
       } else {
         setTimeout(() => {
-          alert("🎉 You debugged the mess. Stage 4 complete!");
+          alert("🎉 You debugged the mess");
         }, 1000);
       }
     } else {
