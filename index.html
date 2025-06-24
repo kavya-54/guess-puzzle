@@ -2,54 +2,232 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Escape Room – All Stages</title>
+  <title>Stage 1 – Logic & Deduction</title>
   <style>
     body {
+      font-family: 'Georgia', serif;
+      background: radial-gradient(ellipse at center, #2b2b2b 0%, #1a1a1a 100%);
+      color: #f0f0f0;
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
-    .stage {
+
+    .card {
+      background: #f5f0e6;
+      color: #222;
+      padding: 40px 30px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+    }
+
+    h2 {
+      color: #444;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    #stageIndicator {
+      font-size: 16px;
+      margin-bottom: 25px;
+      color: #555;
+    }
+
+    input {
+      width: 90%;
+      padding: 14px;
+      font-size: 16px;
+      border: 2px solid #bbb;
+      border-radius: 8px;
+      margin-top: 15px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: #c0392b;
+    }
+
+    #nextButton {
       display: none;
+      margin-top: 20px;
+      background-color: #28a745;
     }
-    .active {
-      display: block;
+
+    #nextButton:hover {
+      background-color: #218838;
+    }
+
+    .puzzle-title {
+      font-style: italic;
+      color: #555;
+      font-size: 17px;
+      margin-bottom: 15px;
+    }
+
+    em {
+      color: #666;
     }
   </style>
 </head>
 <body>
 
-<!-- STAGE 1 -->
-<div id="stage1" class="stage active">
-  <iframe srcdoc='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>Stage 1 – Logic & Deduction</title><style>body { font-family: "Georgia", serif; background: radial-gradient(ellipse at center, #2b2b2b 0%, #1a1a1a 100%); color: #f0f0f0; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; } .card { background: #f5f0e6; color: #222; padding: 40px 30px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); max-width: 700px; width: 90%; text-align: center; } h2 { color: #444; font-size: 26px; margin-bottom: 10px; } #stageIndicator { font-size: 16px; margin-bottom: 25px; color: #555; } input { width: 90%; padding: 14px; font-size: 16px; border: 2px solid #bbb; border-radius: 8px; margin-top: 15px; transition: border-color 0.3s; } input:focus { outline: none; border-color: #007bff; } button { margin-top: 20px; padding: 12px 24px; font-size: 16px; border: none; border-radius: 8px; background-color: #007bff; color: white; cursor: pointer; transition: background-color 0.3s; } button:hover { background-color: #0056b3; } .message { margin-top: 20px; font-weight: 600; font-size: 16px; } .success { color: green; } .error { color: #c0392b; } .puzzle-title { font-style: italic; color: #555; font-size: 17px; margin-bottom: 15px; } em { color: #666; }</style></head><body><div class="card"><h2>🧠 Stage 1: Brain.exe Activated</h2><div id="stageIndicator">Stage 1 of 4</div><div id="quizArea"></div></div><script>function completeStage() { window.parent.stage1Complete(); } function runLogicBatch() { const puzzles = [{ question: "🧊 What’s the only item you’ll always find in the office fridge?", placeholder: "Type your answer", answer: "Expired ID badge", hint: "It never leaves, just like the workload." }]; const selected = puzzles[Math.floor(Math.random() * puzzles.length)]; const quizArea = document.getElementById("quizArea"); quizArea.innerHTML = `<div class='puzzle-title'>Puzzle: Logic Riddle 🧩</div><p style='font-size: 18px; font-weight: 500;'>${selected.question}</p><p><em>Hint: ${selected.hint}</em></p><input type='text' id='logicInput' placeholder='${selected.placeholder}' /><button onclick='checkLogicAnswer()'>Submit</button><div id='message' class='message'></div>`; window.checkLogicAnswer = () => { const userAnswer = document.getElementById("logicInput").value.trim().toLowerCase(); const correctAnswer = selected.answer.toLowerCase(); const msg = document.getElementById("message"); if (userAnswer === correctAnswer) { msg.textContent = "✅ Correct! You cracked the logic!"; msg.className = "message success"; setTimeout(() => completeStage(), 1000); } else { msg.textContent = "❌ Nope! Try again, detective."; msg.className = "message error"; } }; } window.onload = runLogicBatch;</script></body></html>' width="100%" height="1000" style="border:none;"></iframe>
-</div>
+  <div class="card">
+    <h2>🧠 Stage 1: Brain.exe Activated</h2>
+    <div id="stageIndicator">Stage 1 of 11</div>
+    <div id="quizArea"></div>
+    <button id="nextButton">Next Stage ➡️</button>
+  </div>
 
-<!-- STAGE 2 -->
-<div id="stage2" class="stage">
-  <iframe srcdoc='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Stage 2 – Office Culture & Humor</title><style>body { font-family: "Comic Sans MS", cursive, sans-serif; background: linear-gradient(to right, #ffe9d6, #f9f0ff); margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; } .bubble { background: #fffdf7; padding: 30px; border-radius: 25px; box-shadow: 0 0 25px rgba(0, 0, 0, 0.1); max-width: 650px; width: 90%; text-align: center; border: 5px dotted #ffd36a; } h2 { font-size: 28px; margin-bottom: 10px; color: #ff69b4; } #stageIndicator { font-size: 18px; margin-bottom: 25px; color: #666; } input { width: 90%; padding: 12px; font-size: 16px; margin-top: 15px; border-radius: 12px; border: 2px dashed #ffb347; } button { margin-top: 20px; padding: 12px 20px; font-size: 16px; background-color: #ff69b4; color: white; border: none; border-radius: 12px; cursor: pointer; transition: background-color 0.3s; } button:hover { background-color: #e255a1; } .message { margin-top: 18px; font-weight: bold; } .success { color: green; } .error { color: red; } .emoji { font-size: 24px; }</style></head><body><div class="bubble"><h2>🤣 Stage 2: Ctrl+Alt+Banter</h2><div id="stageIndicator">Stage 2 of 4</div><div id="quizArea"></div></div><script>function completeStage() { window.parent.stage2Complete(); } function runCultureBatch() { const quizzes = [{ question: "📧 What’s the most used excuse for missing a meeting?", placeholder: "Type your excuse", answer: "Didn’t get the invite", hint: "It always works... kind of." }]; const selected = quizzes[Math.floor(Math.random() * quizzes.length)]; const quizArea = document.getElementById("quizArea"); quizArea.innerHTML = `<p class='emoji'>${selected.question}</p><p><em>${selected.hint}</em></p><input type='text' id='cultureInput' placeholder='${selected.placeholder}' /><button onclick='checkCultureAnswer()'>Submit</button><div id='message' class='message'></div>`; window.checkCultureAnswer = () => { const inputVal = document.getElementById("cultureInput").value.trim().toLowerCase(); const correct = selected.answer.toLowerCase(); const msg = document.getElementById("message"); if (inputVal === correct) { msg.textContent = "🎉 LOL! Correct!"; msg.className = "message success"; setTimeout(() => completeStage(), 1000); } else { msg.textContent = "🙈 Nope! Try again."; msg.className = "message error"; } }; } window.onload = runCultureBatch;</script></body></html>' width="100%" height="1000" style="border:none;"></iframe>
-</div>
+  <script>
+    let currentStage = 0;
+    const totalStages = 11;
 
-<!-- STAGE 3 -->
-<div id="stage3" class="stage">
-  <iframe src="stage3.html" width="100%" height="1000" style="border:none;"></iframe>
-</div>
+    function completeStage() {
+      currentStage++;
+      if (currentStage < totalStages) {
+        document.getElementById("nextButton").style.display = "inline-block";
+      } else {
+        alert("🎉 Stage 1 complete! Proceeding to the next puzzle.");
+      }
+    }
 
-<!-- STAGE 4 -->
-<div id="stage4" class="stage">
-  <iframe src="stage4.html" width="100%" height="1000" style="border:none;"></iframe>
-</div>
+    document.getElementById("nextButton").onclick = () => {
+      alert("Here you'd load Stage 2 or redirect to it.");
+    };
 
-<script>
-  function goToStage(num) {
-    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
-    document.getElementById('stage' + num).classList.add('active');
-  }
+    function runLogicBatch() {
+      const puzzles = [
+        {
+          question: "🧊 What’s the only item you’ll always find in the office fridge?",
+          placeholder: "Type your answer",
+          answer: "Expired ID badge",
+          hint: "It never leaves, just like the workload."
+        },
+        {
+          question: "🗓 If the team meeting is moved from Friday to two days before Wednesday, what day is it now?",
+          placeholder: "Type your answer",
+          answer: "Monday",
+          hint: "Count backwards from Wednesday."
+        },
+        {
+          question: "📧 Your inbox has 100 unread emails. You delete 40. Half of the rest are read. How many are still unread?",
+          placeholder: "Type the number",
+          answer: "30",
+          hint: "Do the math step by step."
+        },
+        {
+          question: "📁 I have folders within folders, but no files. What am I?",
+          placeholder: "Your answer",
+          answer: "Email thread",
+          hint: "Think of something digital, endless, and annoying."
+        },
+        {
+          question: "📆 If yesterday was the day before Monday, what day is today?",
+          placeholder: "Enter the day",
+          answer: "Tuesday",
+          hint: "Rewind from Monday carefully."
+        },
+        {
+          question: "🔢 Fill the blank: 1, 2, 4, 8, __",
+          placeholder: "Your number",
+          answer: "16",
+          hint: "It doubles each time."
+        },
+        {
+          question: "🔤 Unscramble the word: 'E T N I M G E'",
+          placeholder: "Your answer",
+          answer: "Meeting",
+          hint: "It happens too often."
+        },
+        {
+          question: "📎 A colleague always books a meeting at 5:59 PM. What's their motive?",
+          placeholder: "Guess the motive",
+          answer: "Avoid real work",
+          hint: "It’s an excuse."
+        },
+        {
+          question: "👀 If everyone is 'working from home', but no one replies... where are they really?",
+          placeholder: "Your guess",
+          answer: "Sleeping",
+          hint: "Let’s be honest here."
+        },
+        {
+          question: "📊 What comes next? 9 AM, 11 AM, 2 PM, 6 PM, __",
+          placeholder: "Your answer",
+          answer: "11 PM",
+          hint: "It’s escalating!"
+        }
+      ];
 
-  window.stage1Complete = () => goToStage(2);
-  window.stage2Complete = () => goToStage(3);
-  window.stage3Complete = () => goToStage(4);
-  window.stage4Complete = () => alert("🎉 All stages complete! You escaped the office madness!");
-</script>
+      const selected = puzzles[Math.floor(Math.random() * puzzles.length)];
+      const quizArea = document.getElementById("quizArea");
+      quizArea.innerHTML = `
+        <div class="puzzle-title">Puzzle: Logic Riddle 🧩</div>
+        <p style="font-size: 18px; font-weight: 500;">${selected.question}</p>
+        <p><em>Hint: ${selected.hint}</em></p>
+        <input type="text" id="logicInput" placeholder="${selected.placeholder}" />
+        <button onclick="checkLogicAnswer()">Submit</button>
+        <div id="message" class="message"></div>
+      `;
+
+      window.checkLogicAnswer = () => {
+        const userAnswer = document.getElementById("logicInput").value.trim().toLowerCase();
+        const correctAnswer = selected.answer.toLowerCase();
+        const msg = document.getElementById("message");
+
+        if (userAnswer === correctAnswer) {
+          msg.textContent = "✅ Correct! You cracked the logic!";
+          msg.className = "message success";
+          setTimeout(() => {
+            completeStage();
+          }, 1000);
+        } else {
+          msg.textContent = "❌ Nope! Try again, detective.";
+          msg.className = "message error";
+        }
+      };
+    }
+
+    window.onload = runLogicBatch;
+  </script>
 
 </body>
 </html>
