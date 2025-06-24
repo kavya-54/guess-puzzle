@@ -144,7 +144,107 @@
       text: `Which attachment probably triggered an audit?\n\n> cd /emails/attachments/\n> ls\n- vacation.png\n- INVOICE_REAL.docx\n- draft_contract.pdf\n- ignore_me.txt`,
       answer: "invoice_real.docx",
       hint: "Finance never jokes with INVOICE_REALs."
-    }
+    },
+  {
+    text: `Which folder is the real source of trouble?\n\n> cd /logs/archive/old_failures/\n> ls\n- crash01.log\n- retry2.log\n- silent_fail_FINAL.log\n- ignore_me.txt`,
+    answer: "silent_fail_final.log",
+    hint: "Failures that are 'silent' are usually the loudest later."
+  },
+  {
+    text: `Which backup feels too manual to trust?\n\n> cd /backups/manual/\n> ls\n- backup1.zip\n- backup_final.zip\n- FINAL_FINAL_THISONE.zip\n- just_in_case.zip`,
+    answer: "final_final_thisone.zip",
+    hint: "Two finals is one too many."
+  },
+  {
+    text: `What file clearly wasn't meant to be seen?\n\n> cd /legal/compliance/docs/\n> ls\n- policy_draft.pdf\n- disclosure.txt\n- internal_only_FINAL.pdf\n- about_us.txt`,
+    answer: "internal_only_final.pdf",
+    hint: "If it's marked 'internal only', it's probably juicy."
+  },
+  {
+    text: `Which screenshot would be HR’s nightmare?\n\n> cd /screenshots/random/\n> ls\n- login_fail.png\n- oops_mistake.png\n- salary_leak_FINAL.png\n- daily_standup.png`,
+    answer: "salary_leak_final.png",
+    hint: "Leaked salaries = storm incoming."
+  },
+  {
+    text: `Which folder probably shouldn’t exist?\n\n> cd /projects/abandoned/\n> ls\n- v1/\n- v2/\n- keep_this_FINAL_version/\n- trash/`,
+    answer: "keep_this_final_version",
+    hint: "When something is 'abandoned' yet 'keep_this', it's fishy."
+  },
+  {
+    text: `Which report shouldn’t have gone public?\n\n> cd /reports/2024/public/\n> ls\n- q1.pdf\n- q2.pdf\n- confidential_data_FINAL.pdf\n- summary.docx`,
+    answer: "confidential_data_final.pdf",
+    hint: "Public folder + confidential file? Uh-oh."
+  },
+  {
+    text: `What file screams “unfinished business”? \n\n> cd /designs/assets/vectors/\n> ls\n- final.svg\n- final_final.ai\n- not_final_at_all.psd\n- draft.ai`,
+    answer: "not_final_at_all.psd",
+    hint: "Honesty in naming doesn’t make it better."
+  },
+  {
+    text: `Which upload might trigger a lawsuit?\n\n> cd /uploads/team_pics/\n> ls\n- party1.jpg\n- fun2.jpg\n- legal_issue_final.png\n- lunch.png`,
+    answer: "legal_issue_final.png",
+    hint: "Lawsuits and laughter are rarely in the same folder."
+  },
+  {
+    text: `What file was clearly the result of panic?\n\n> cd /docs/finance/quarterly/\n> ls\n- q1_summary.pdf\n- corrections.xlsx\n- FINAL_DONT_DELETE.xlsx\n- trends.txt`,
+    answer: "final_dont_delete.xlsx",
+    hint: "Begging in the filename is a red flag."
+  },
+  {
+    text: `Which file is *not* what it claims?\n\n> cd /downloads/\n> ls\n- invoice.pdf\n- joke.docx\n- totally_normal_image.jpg\n- backup.zip`,
+    answer: "totally_normal_image.jpg",
+    hint: "Nothing is ever 'totally normal'."
+  },
+  {
+    text: `Which folder holds secrets hidden in plain sight?\n\n> cd /temp/temp/temp/\n> ls\n- temp1.tmp\n- temp2.tmp\n- not_temp_actually_important.tmp\n- empty.log`,
+    answer: "not_temp_actually_important.tmp",
+    hint: "Sometimes junk folders hide gold."
+  },
+  {
+    text: `Which file is suspicious in a wellness folder?\n\n> cd /company/wellness/logs/\n> ls\n- yoga_tips.txt\n- mood_tracker.csv\n- OVERWORK_FINAL.docx\n- team_hike.jpg`,
+    answer: "overwork_final.docx",
+    hint: "Irony lives here."
+  },
+  {
+    text: `Which config is just asking to fail?\n\n> cd /servers/nginx/backups/\n> ls\n- nginx.conf\n- nginx_old.conf\n- do_not_use_THISONE.conf\n- copy.txt`,
+    answer: "do_not_use_thisone.conf",
+    hint: "Temptation is powerful."
+  },
+  {
+    text: `Which doc is definitely not a joke?\n\n> cd /hr/policies/extra/\n> ls\n- prank_list.docx\n- april_fools.txt\n- real_termination_letter_FINAL.docx\n- jokes.docx`,
+    answer: "real_termination_letter_final.docx",
+    hint: "It’s always hidden between the jokes."
+  },
+  {
+    text: `Which spreadsheet is likely cursed?\n\n> cd /sheets/analytics/\n> ls\n- report1.xlsx\n- numbers.xlsx\n- FINAL_NIGHTMARE_SHEET.xlsx\n- chart.png`,
+    answer: "final_nightmare_sheet.xlsx",
+    hint: "That name sounds like past trauma."
+  },
+  {
+    text: `What file is oddly honest?\n\n> cd /team/slides/\n> ls\n- meeting1.ppt\n- presentation_final.ppt\n- we_have_no_idea.ppt\n- demo.ppt`,
+    answer: "we_have_no_idea.ppt",
+    hint: "Sometimes naming tells the whole story."
+  },
+  {
+    text: `Which dump folder might contain gold?\n\n> cd /storage/dump/\n> ls\n- delete_me.txt\n- trash.png\n- this_is_real_FINAL.pdf\n- junk.zip`,
+    answer: "this_is_real_final.pdf",
+    hint: "Real things love hiding in dumps."
+  },
+  {
+    text: `Which project file says “abandon all hope”?\n\n> cd /projects/UX/final_stage/\n> ls\n- draft_v2.sketch\n- final.sketch\n- FINAL_final_fml.sketch\n- icons/`,
+    answer: "final_final_fml.sketch",
+    hint: "‘fml’ is the dev's last breath of hope."
+  },
+  {
+    text: `Which .zip is definitely suspicious?\n\n> cd /archives/internal/\n> ls\n- q1_data.zip\n- old_docs.zip\n- totally_safe_file_FINAL.zip\n- notes.txt`,
+    answer: "totally_safe_file_final.zip",
+    hint: "That’s exactly what a hacker would name it."
+  },
+  {
+    text: `Which file doesn't belong at the IT helpdesk?\n\n> cd /it/helpdesk/shared/\n> ls\n- tickets.log\n- responses.csv\n- angry_email_FINAL.docx\n- guidelines.pdf`,
+    answer: "angry_email_final.docx",
+    hint: "That one’s not part of the process."
+  }
   ];
 
   let selectedPuzzles = [];
