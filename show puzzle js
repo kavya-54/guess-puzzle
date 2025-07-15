@@ -1,0 +1,29 @@
+function showPuzzle() {
+  const terminal = document.getElementById("terminalOutput");
+  const hintBox = document.getElementById("hintBox");
+  hintBox.style.display = "none";
+  hintBox.textContent = selectedPuzzles[current].hint;
+
+  // Extract and clean original text
+  const rawText = selectedPuzzles[current].text;
+  const lines = rawText.split('\n');
+
+  // Extract file lines (after '> ls')
+  const lsStart = lines.findIndex(line => line.trim().startsWith('> ls'));
+  const fileLines = lines.slice(lsStart + 1).filter(line => line.trim().startsWith('-'));
+  const files = fileLines.map(line => line.replace('-', '').trim());
+
+  // Shuffle the file list
+  const shuffledFiles = [...files].sort(() => Math.random() - 0.5);
+
+  // Generate buttons from shuffled file list
+  const fileButtons = shuffledFiles.map(file => 
+    `<button onclick="handleFileClick('${file}')">${file}</button>`
+  ).join('<br>');
+
+  // Rebuild display: Keep everything before `> ls`, then add `> ls` + buttons
+  const beforeLS = lines.slice(0, lsStart + 1).join('\n');
+  const rendered = `${beforeLS}\n${fileButtons}`;
+
+  terminal.innerHTML = `<pre>${rendered}</pre>`;
+}
