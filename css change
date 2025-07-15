@@ -1,0 +1,9 @@
+.terminal button {
+  background: #222;
+  color: #33ff33;
+  border: 1px solid #33ff33;
+  padding: 6px 10px;
+  margin: 4px 0;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+}
