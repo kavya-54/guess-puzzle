@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title> Debug Terminal Techies</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .terminal {
+      background: #000;
+      padding: 30px;
+      width: 720px;
+      max-width: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #0f0;
+    }
+
+    .terminal button {
+      background: #222;
+      color: #33ff33;
+      border: 1px solid #33ff33;
+      padding: 6px 10px;
+      margin: 4px 0;
+      font-family: 'Courier New', monospace;
+      cursor: pointer;
+    }
+
+    .terminal-header {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .prompt {
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: #999;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 8px 10px;
+      background: #111;
+      border: 1px solid #33ff33;
+      color: #33ff33;
+      font-family: 'Courier New', monospace;
+    }
+
+    .input-area button {
+      padding: 8px 16px;
+      background: #33ff33;
+      border: none;
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hint-button {
+      margin-top: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #33ff33;
+      background: none;
+      border: none;
+      text-decoration: underline;
+    }
+
+    .success { color: #0f0; margin-top: 10px; font-weight: bold; }
+    .error { color: red; margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="terminal">
+  <div class="terminal-header">💻  Debug What Shouldn't Exist Techies</div>
+  <div class="prompt" id="terminalOutput"></div>
+  <button class="hint-button" onclick="toggleHint()">Need a hint?</button>
+  <div class="hint" id="hintBox"></div>
+  <div class="input-area">
+    <input type="text" id="answerInput" placeholder="Enter answer..." />
+  </div>
+</div>
+
+<script>
+  const allPuzzles = [
+    {
+      text: `Which file would break production if ignored?\n\n> cd /projects/final_versions/test_final_FINAL/\n> ls\n- try_this.txt\n- FINALVERSION.png\n- secret_ONE_keep.png\n- meh.png`,
+      answer: "secret_one_keep.png",
+      hint: "If it says 'keep', maybe there's a reason."
+    },
+    {
+      text: `Which doc shouldn't be in the HR backups folder?\n\n> cd /mnt/employees/admin/hr/backup/\n> ls\n- policies.doc\n- archive_23.zip\n- nothing_to_see_here.pdf\n- hire_log_REAL.pdf`,
+      answer: "hire_log_real.pdf",
+      hint: "Sometimes 'REAL' means 'really a problem'."
+    },
+    {
+      text: `What looks like the messiest final log?\n\n> cd /system32/temp/cache/files/\n> ls\n- final-final-done.log\n- test.txt\n- ignore.tmp\n- virus_scan.bat`,
+      answer: "final-final-done.log",
+      hint: "'Final' repeated is a dev's way of giving up."
+    },
+    {
+      text: `Which idea has clearly been through too much?\n\n> cd /shared/teamX/projectX/assets/\n> ls\n- idea_v1.txt\n- idea_v2.txt\n- idea_final_FINAL.txt\n- old_stuff.txt`,
+      answer: "idea_final_final.txt",
+      hint: "This idea has seen some things..."
+    },
+    {
+      text: `Which file looks dangerously important?\n\n> cd /backup/clients/2022/reports/\n> ls\n- a.txt\n- b.txt\n- c.txt\n- masterReport_FINAL.docx`,
+      answer: "masterreport_final.docx",
+      hint: "Master reports are rarely casual."
+    },
+    {
+      text: `Which log screams something went wrong?\n\n> cd /dev/journal/security/logs/\n> ls\n- jan.log\n- feb.log\n- mar.log\n- breach_March_FINAL.log`,
+      answer: "breach_march_final.log",
+      hint: "When 'breach' and 'final' appear together, look twice."
+    },
+    {
+      text: `Which meme doesn't belong in /fun/junk/memes?\n\n> cd /documents/fun/junk/memes/\n> ls\n- haha1.png\n- not_funny.png\n- super_secret.png\n- meme_final.jpg`,
+      answer: "super_secret.png",
+      hint: "One of these memes might be top secret."
+    },
+    {
+      text: `Which file should you definitely NOT open?\n\n> cd /configs/build/settings/\n> ls\n- config.json\n- settings.json\n- DO_NOT_TOUCH_final.json\n- back.json`,
+      answer: "do_not_touch_final.json",
+      hint: "Reverse psychology works on devs too."
+    },
+    {
+      text: `What file marks the final version of creative chaos?\n\n> cd /training/docs/drafts/\n> ls\n- draft1.txt\n- draft2.txt\n- draft_final.txt\n- notes.txt`,
+      answer: "draft_final.txt",
+      hint: "Draft 1, 2, then... inevitable final."
+    },
+    {
+      text: `Which attachment probably triggered an audit?\n\n> cd /emails/attachments/\n> ls\n- vacation.png\n- INVOICE_REAL.docx\n- draft_contract.pdf\n- ignore_me.txt`,
+      answer: "invoice_real.docx",
+      hint: "Finance never jokes with INVOICE_REALs."
+    },
+  {
+    text: `Which folder is the real source of trouble?\n\n> cd /logs/archive/old_failures/\n> ls\n- crash01.log\n- retry2.log\n- silent_fail_FINAL.log\n- ignore_me.txt`,
+    answer: "silent_fail_final.log",
+    hint: "Failures that are 'silent' are usually the loudest later."
+  },
+  {
+    text: `Which backup feels too manual to trust?\n\n> cd /backups/manual/\n> ls\n- backup1.zip\n- backup_final.zip\n- FINAL_FINAL_THISONE.zip\n- just_in_case.zip`,
+    answer: "final_final_thisone.zip",
+    hint: "Two finals is one too many."
+  },
+  {
+    text: `What file clearly wasn't meant to be seen?\n\n> cd /legal/compliance/docs/\n> ls\n- policy_draft.pdf\n- disclosure.txt\n- internal_only_FINAL.pdf\n- about_us.txt`,
+    answer: "internal_only_final.pdf",
+    hint: "If it's marked 'internal only', it's probably juicy."
+  },
+  {
+    text: `Which screenshot would be HR’s nightmare?\n\n> cd /screenshots/random/\n> ls\n- login_fail.png\n- oops_mistake.png\n- salary_leak_FINAL.png\n- daily_standup.png`,
+    answer: "salary_leak_final.png",
+    hint: "Leaked salaries = storm incoming."
+  },
+  {
+    text: `Which folder probably shouldn’t exist?\n\n> cd /projects/abandoned/\n> ls\n- v1/\n- v2/\n- keep_this_FINAL_version/\n- trash/`,
+    answer: "keep_this_final_version",
+    hint: "When something is 'abandoned' yet 'keep_this', it's fishy."
+  },
+  {
+    text: `Which report shouldn’t have gone public?\n\n> cd /reports/2024/public/\n> ls\n- q1.pdf\n- q2.pdf\n- confidential_data_FINAL.pdf\n- summary.docx`,
+    answer: "confidential_data_final.pdf",
+    hint: "Public folder + confidential file? Uh-oh."
+  },
+  {
+    text: `What file screams “unfinished business”? \n\n> cd /designs/assets/vectors/\n> ls\n- final.svg\n- final_final.ai\n- not_final_at_all.psd\n- draft.ai`,
+    answer: "not_final_at_all.psd",
+    hint: "Honesty in naming doesn’t make it better."
+  },
+  {
+    text: `Which upload might trigger a lawsuit?\n\n> cd /uploads/team_pics/\n> ls\n- party1.jpg\n- fun2.jpg\n- legal_issue_final.png\n- lunch.png`,
+    answer: "legal_issue_final.png",
+    hint: "Lawsuits and laughter are rarely in the same folder."
+  },
+  {
+    text: `What file was clearly the result of panic?\n\n> cd /docs/finance/quarterly/\n> ls\n- q1_summary.pdf\n- corrections.xlsx\n- FINAL_DONT_DELETE.xlsx\n- trends.txt`,
+    answer: "final_dont_delete.xlsx",
+    hint: "Begging in the filename is a red flag."
+  },
+  {
+    text: `Which file is *not* what it claims?\n\n> cd /downloads/\n> ls\n- invoice.pdf\n- joke.docx\n- totally_normal_image.jpg\n- backup.zip`,
+    answer: "totally_normal_image.jpg",
+    hint: "Nothing is ever 'totally normal'."
+  },
+  {
+    text: `Which folder holds secrets hidden in plain sight?\n\n> cd /temp/temp/temp/\n> ls\n- temp1.tmp\n- temp2.tmp\n- not_temp_actually_important.tmp\n- empty.log`,
+    answer: "not_temp_actually_important.tmp",
+    hint: "Sometimes junk folders hide gold."
+  },
+  {
+    text: `Which file is suspicious in a wellness folder?\n\n> cd /company/wellness/logs/\n> ls\n- yoga_tips.txt\n- mood_tracker.csv\n- OVERWORK_FINAL.docx\n- team_hike.jpg`,
+    answer: "overwork_final.docx",
+    hint: "Irony lives here."
+  },
+  {
+    text: `Which config is just asking to fail?\n\n> cd /servers/nginx/backups/\n> ls\n- nginx.conf\n- nginx_old.conf\n- do_not_use_THISONE.conf\n- copy.txt`,
+    answer: "do_not_use_thisone.conf",
+    hint: "Temptation is powerful."
+  },
+  {
+    text: `Which doc is definitely not a joke?\n\n> cd /hr/policies/extra/\n> ls\n- prank_list.docx\n- april_fools.txt\n- real_termination_letter_FINAL.docx\n- jokes.docx`,
+    answer: "real_termination_letter_final.docx",
+    hint: "It’s always hidden between the jokes."
+  },
+  {
+    text: `Which spreadsheet is likely cursed?\n\n> cd /sheets/analytics/\n> ls\n- report1.xlsx\n- numbers.xlsx\n- FINAL_NIGHTMARE_SHEET.xlsx\n- chart.png`,
+    answer: "final_nightmare_sheet.xlsx",
+    hint: "That name sounds like past trauma."
+  },
+  {
+    text: `What file is oddly honest?\n\n> cd /team/slides/\n> ls\n- meeting1.ppt\n- presentation_final.ppt\n- we_have_no_idea.ppt\n- demo.ppt`,
+    answer: "we_have_no_idea.ppt",
+    hint: "Sometimes naming tells the whole story."
+  },
+  {
+    text: `Which dump folder might contain gold?\n\n> cd /storage/dump/\n> ls\n- delete_me.txt\n- trash.png\n- this_is_real_FINAL.pdf\n- junk.zip`,
+    answer: "this_is_real_final.pdf",
+    hint: "Real things love hiding in dumps."
+  },
+  {
+    text: `Which project file says “abandon all hope”?\n\n> cd /projects/UX/final_stage/\n> ls\n- draft_v2.sketch\n- final.sketch\n- FINAL_final_fml.sketch\n- icons/`,
+    answer: "final_final_fml.sketch",
+    hint: "‘fml’ is the dev's last breath of hope."
+  },
+  {
+    text: `Which .zip is definitely suspicious?\n\n> cd /archives/internal/\n> ls\n- q1_data.zip\n- old_docs.zip\n- totally_safe_file_FINAL.zip\n- notes.txt`,
+    answer: "totally_safe_file_final.zip",
+    hint: "That’s exactly what a hacker would name it."
+  },
+  {
+    text: `Which file doesn't belong at the IT helpdesk?\n\n> cd /it/helpdesk/shared/\n> ls\n- tickets.log\n- responses.csv\n- angry_email_FINAL.docx\n- guidelines.pdf`,
+    answer: "angry_email_final.docx",
+    hint: "That one’s not part of the process."
+  }
+  ];
+
+  let selectedPuzzles = [];
+  let current = 0;
+
+  function pickTwoRandomPuzzles() {
+    const shuffled = [...allPuzzles].sort(() => Math.random() - 0.5);
+    selectedPuzzles = shuffled.slice(0, 3);
+  }
+
+  function showPuzzle() {
+    const terminal = document.getElementById("terminalOutput");
+  const hintBox = document.getElementById("hintBox");
+  hintBox.style.display = "none";
+  hintBox.textContent = selectedPuzzles[current].hint;
+
+  // Extract and clean original text
+  const rawText = selectedPuzzles[current].text;
+  const lines = rawText.split('\n');
+
+  // Extract file lines (after '> ls')
+  const lsStart = lines.findIndex(line => line.trim().startsWith('> ls'));
+  const fileLines = lines.slice(lsStart + 1).filter(line => line.trim().startsWith('-'));
+  const files = fileLines.map(line => line.replace('-', '').trim());
+
+  // Shuffle the file list
+  const shuffledFiles = [...files].sort(() => Math.random() - 0.5);
+
+  // Generate buttons from shuffled file list
+  const fileButtons = shuffledFiles.map(file => 
+    `<button onclick="handleFileClick('${file}')">${file}</button>`
+  ).join('<br>');
+
+  // Rebuild display: Keep everything before `> ls`, then add `> ls` + buttons
+  const beforeLS = lines.slice(0, lsStart + 1).join('\n');
+  const rendered = `${beforeLS}\n${fileButtons}`;
+
+  terminal.innerHTML = `<pre>${rendered}</pre>`;
+  }
+
+  function handleFileClick(fileName) {
+    const inputElem = document.getElementById("answerInput");
+    inputElem.value = fileName;
+    
+    // Trigger Enter keypress simulation
+    submitAnswer();
+  }
+
+  function toggleHint() {
+    const hintBox = document.getElementById("hintBox");
+    hintBox.style.display = hintBox.style.display === "block" ? "none" : "block";
+  }
+
+  function submitAnswer() {
+    const inputElem = document.getElementById("answerInput");
+    const input = inputElem.value.trim().toLowerCase();
+    const correct = selectedPuzzles[current].answer.toLowerCase();
+    const terminal = document.getElementById("terminalOutput");
+
+    const prevSuccess = terminal.querySelector(".success");
+    const prevError = terminal.querySelector(".error");
+    if (prevSuccess) prevSuccess.remove();
+    if (prevError) prevError.remove();
+
+    if (input === correct) {
+      const success = document.createElement("div");
+      success.className = "success";
+      success.textContent = "✅ Correct!";
+      terminal.appendChild(success);
+
+      current++;
+      if (current < selectedPuzzles.length) {
+        setTimeout(() => {
+          inputElem.value = "";
+          showPuzzle();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          alert("🎉 You debugged the mess");
+        }, 1000);
+      }
+    } else {
+      const error = document.createElement("div");
+      error.className = "error";
+      error.textContent = "❌ Incorrect. Access denied.";
+      terminal.appendChild(error);
+    }
+  }
+
+  window.onload = () => {
+    pickTwoRandomPuzzles();
+    showPuzzle();
+  };
+</script>
+
+</body>
+</html>
